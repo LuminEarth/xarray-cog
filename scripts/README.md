@@ -1,7 +1,6 @@
 # Scripts
 
-Utility scripts for benchmarking, packaging verification, script testing, and
-local builds.
+Utility scripts for benchmarking, packaging verification, and script tests.
 
 ## Benchmarks
 
@@ -23,18 +22,13 @@ options, methodology, and recorded results.
   `benchmark.Dockerfile` and runs `benchmark.py` inside a container with
   1 CPU and a configurable memory/swap limit (`BENCH_MEMORY`, default `4g`).
 
-## Packaging and release verification
+## Packaging verification
 
 - [`smoke-installed.py`](smoke-installed.py) — Post-install smoke test run by
-  GitHub Actions and `cibuildwheel` in a clean base-only
+  `ci.yml`, `release.yml`, and `cibuildwheel` in a clean base-only
   environment. Verifies `xarray_cog` imports from `site-packages`, optional
   backends (`zarr`, `dask`, `rasterio`, `osgeo`) are absent, and both
   `xarray_cog.write_cog` and `.cog.to_cog` write valid BigTIFF files.
-- [`check_distributions.py`](check_distributions.py) — Release artifact validator
-  used in [`.github/workflows/publish.yml`](../.github/workflows/publish.yml) to
-  verify a release directory contains the expected 20 wheels and 1 source
-  archive matching the package version and optional git tag, with no unexpected
-  files.
 
 ## Script tests
 
@@ -47,12 +41,3 @@ python3 -m unittest discover -s scripts -p 'test_*.py'
 - [`test_workflows.py`](test_workflows.py) — Stdlib-only unit tests for
   `benchmark.py` covering synthetic fixture generation (`create_sample`),
   overwrite refusal, CLI validation, `--help` output, and `format_summary_table`.
-- [`test_distributions.py`](test_distributions.py) — Unit tests for
-  `check_distributions.py` covering valid release sets, tag/version mismatches,
-  incomplete wheel or source archive sets, and unexpected files.
-
-## Local development
-
-- [`cargo-local`](cargo-local) — Wrapper around `cargo` using a repo-local
-  `.tools/cargo` and `.tools/rustup` toolchain (`CARGO_BUILD_JOBS=1`), setting
-  macOS SDK C++ include flags in `CXXFLAGS` when running on Darwin.
