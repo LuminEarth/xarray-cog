@@ -1,7 +1,7 @@
 # xarray-cog
 
-Save xarray `DataArray` and `Dataset` rasters directly as Cloud Optimized
-GeoTIFFs (COGs), powered by Rust.
+An xarray extension for saving `DataArray` and `Dataset` rasters as Cloud
+Optimized GeoTIFFs (COGs), powered by Rust.
 
 - **Bounded memory for large rasters**: Streams chunked inputs (Zarr, NetCDF,
   Dask) tile-by-tile within a configurable `memory_limit` (512 MiB default for
