@@ -5,17 +5,18 @@ An xarray extension for saving arrays and datasets as Cloud Optimized GeoTIFFs
 
 ## Install
 
-The package is not published yet. Install this checkout with Python 3.10+,
-Rust 1.91+ and a C/C++ build toolchain:
+Install with Python 3.10+:
 
 ```sh
-python -m pip install .
+pip install xarray-cog
+# or with uv:
+uv add xarray-cog
 ```
 
-The intended release command is `pip install xarray-cog` once a release exists.
+To build from source instead, install Rust 1.91+ and a C/C++ build toolchain and run `pip install .`.
 The base runtime contains NumPy, xarray and pyproj; input readers are optional.
-Linux wheel builds are checked in CI. Windows is not a supported release
-target yet. See [Contributing](CONTRIBUTING.md) for development setup.
+Linux and macOS wheels are built in CI; Windows is not a supported release target.
+See [Contributing](https://github.com/LuminEarth/xarray-cog/blob/main/CONTRIBUTING.md) for development setup.
 
 ## Export an array or dataset
 
@@ -54,7 +55,7 @@ with xr.open_dataset('weather.nc', engine='h5netcdf', decode_coords='all') as so
     celsius.cog.to_cog('celsius.tif', crs='EPSG:4326')
 ```
 
-Use the same approach with other xarray readers. See [input backends](docs/python.md#input-backends)
+Use the same approach with other xarray readers. See [input backends](https://github.com/LuminEarth/xarray-cog/blob/main/docs/python.md#input-backends)
 for remote Zarr and CF metadata guidance.
 
 Defaults are DEFLATE **7**, 512-pixel tiles, nearest-neighbour overviews and local
@@ -68,9 +69,9 @@ Rust compresses bounded batches in parallel; `num_threads` sets a worker ceiling
 with automatic selection by default. Pass `progress=True` to show a tile progress
 bar and finalization status on stderr.
 
-- [Python API and options](docs/python.md)
-- [Limitations](docs/limitations.md) and [architecture](docs/architecture.md)
-- [Benchmarks](docs/benchmarks/README.md)
+- [Python API and options](https://github.com/LuminEarth/xarray-cog/blob/main/docs/python.md)
+- [Limitations](https://github.com/LuminEarth/xarray-cog/blob/main/docs/limitations.md) and [architecture](https://github.com/LuminEarth/xarray-cog/blob/main/docs/architecture.md)
+- [Benchmarks](https://github.com/LuminEarth/xarray-cog/blob/main/docs/benchmarks/README.md)
 
 MIT licensed. The internal writer includes adapted MIT-licensed code from
-geotiff-writer; see [third-party notices](THIRD_PARTY_NOTICES.md).
+geotiff-writer; see [third-party notices](https://github.com/LuminEarth/xarray-cog/blob/main/THIRD_PARTY_NOTICES.md).

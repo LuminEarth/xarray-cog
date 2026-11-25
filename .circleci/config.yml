@@ -125,19 +125,17 @@ jobs:
       - store_artifacts:
           path: dist
 
-  # Publishing is disabled until PyPI Trusted Publishing is configured.
-  # Uncomment this job AND its workflow entry below when ready.
-  # publish-pypi:
-  #   docker:
-  #     - image: cimg/python:3.13
-  #   steps:
-  #     - attach_workspace:
-  #         at: dist
-  #     - run:
-  #         name: Publish validated distributions to PyPI
-  #         command: |
-  #           python -m pip install 'twine>=6.1,<7'
-  #           python -m twine upload --non-interactive dist/*
+  publish-pypi:
+    docker:
+      - image: cimg/python:3.13
+    steps:
+      - attach_workspace:
+          at: dist
+      - run:
+          name: Publish validated distributions to PyPI
+          command: |
+            python -m pip install 'twine>=6.1,<7'
+            python -m twine upload --non-interactive dist/*
 
 workflows:
   ci:
@@ -175,13 +173,12 @@ workflows:
           filters:
             tags:
               only: /^v[0-9]+\.[0-9]+\.[0-9]+.*$/
-      # Enable only after configuring CircleCI Trusted Publishing on PyPI.
-      # - publish-pypi:
-      #     context: pypi
-      #     requires:
-      #       - distributions
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /^v[0-9]+\.[0-9]+\.[0-9]+.*$/
+      - publish-pypi:
+          context: pypi
+          requires:
+            - distributions
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+.*$/
