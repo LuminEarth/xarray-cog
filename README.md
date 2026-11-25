@@ -3,10 +3,9 @@
 An xarray extension for saving `DataArray` and `Dataset` rasters as Cloud
 Optimized GeoTIFFs (COGs), powered by Rust.
 
-- **Bounded memory for large rasters**: Streams chunked inputs (Zarr, NetCDF,
-  Dask) tile-by-tile within a configurable `memory_limit` (512 MiB default for
-  writer buffers and chunk cache), instead of scaling writer memory with the
-  full raster size.
+- **Built for large rasters on limited memory**: Streams chunked inputs (Zarr,
+  NetCDF, Dask) tile-by-tile within a configurable `memory_limit`, so memory
+  usage stays bounded instead of growing with the full raster size.
 - **Fast and parallel**: Compresses tile batches in parallel in Rust—faster
   than GDAL-based exporters (`rioxarray`, `odc-geo`) in our
   [benchmarks](https://github.com/LuminEarth/xarray-cog/blob/main/docs/benchmarks/README.md).
@@ -71,9 +70,8 @@ for remote Zarr and CF metadata guidance.
 
 Writes local BigTIFF COGs with DEFLATE level 7, 512-pixel tiles, and
 nearest-neighbour overviews. Existing destinations are refused unless
-`overwrite=True`, and failed exports preserve any existing file. Control the
-writer/cache budget with `memory_limit`, worker count with `num_threads`, and
-progress bars with `progress=True`.
+`overwrite=True`, and failed exports preserve any existing file. Tune memory usage with `memory_limit`, parallelism with `num_threads`, and
+show progress with `progress=True`.
 
 - [Python API and options](https://github.com/LuminEarth/xarray-cog/blob/main/docs/python.md)
 - [Limitations](https://github.com/LuminEarth/xarray-cog/blob/main/docs/limitations.md) and [architecture](https://github.com/LuminEarth/xarray-cog/blob/main/docs/architecture.md)
