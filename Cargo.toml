@@ -1,0 +1,37 @@
+[package]
+name = "xarray-cog"
+version = "0.1.0"
+description = "Export xarray rasters as Cloud Optimized GeoTIFFs with a Rust writer"
+repository = "https://github.com/LuminEarth/xarray-cog"
+license = "MIT"
+readme = "README.md"
+include = ["/src/**", "/tests/**", "/Cargo.lock", "/README.md", "/LICENSE", "/THIRD_PARTY_NOTICES.md", "/CHANGELOG.md", "/pyproject.toml", "/python/**/*.py", "/python/**/*.pyi", "/python/**/py.typed"]
+edition = "2021"
+rust-version = "1.91"
+
+publish = false
+
+[lib]
+crate-type = ["rlib", "cdylib"]
+
+[features]
+python = ["dep:pyo3", "dep:numpy", "dep:serde", "dep:serde_json"]
+
+[dependencies]
+pyo3 = { version = "0.30", optional = true }
+numpy = { version = "0.30", optional = true }
+serde = { version = "1", features = ["derive"], optional = true }
+serde_json = { version = "1", optional = true }
+geotiff-core = "0.11"
+tiff-core = "0.11"
+tiff-writer = "0.11"
+thiserror = "2"
+ndarray = "0.17"
+tempfile = "3"
+rayon = "1"
+
+[dev-dependencies]
+tiff = "0.11"
+
+[profile.release]
+strip = true

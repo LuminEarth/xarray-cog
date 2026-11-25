@@ -1,0 +1,16 @@
+*
+!Cargo.toml
+!Cargo.lock
+!src/
+!src/**
+!scripts/
+!scripts/benchmark.py
+
+!pyproject.toml
+!README.md
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!CHANGELOG.md
+!python/
+!python/xarray_cog/
+!python/xarray_cog/*.py

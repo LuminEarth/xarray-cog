@@ -1,0 +1,68 @@
+[build-system]
+requires = ["maturin>=1.9,<2"]
+build-backend = "maturin"
+
+[project]
+name = "xarray-cog"
+version = "0.1.0"
+description = "Export xarray rasters as Cloud Optimized GeoTIFFs without GDAL"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+dependencies = ["numpy>=1.24", "xarray>=2024.1", "pyproj>=3.6"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "mypy>=1.15", "rasterio>=1.4", "dask[array]>=2024.1", "zarr>=2.18,<3; python_version < '3.11'", "zarr>=3; python_version >= '3.11'", "h5netcdf>=1.3", "h5py>=3.10"]
+
+[dependency-groups]
+benchmark = [
+    "numpy>=1.24,<3",
+    "xarray>=2024.1",
+    "dask[array]>=2024.1",
+    "zarr>=2.18",
+    "h5netcdf>=1.3",
+    "h5py>=3.10",
+    "rasterio>=1.4",
+    "rioxarray>=0.19",
+    "odc-geo>=0.5.4",
+    "tifffile>=2023.7.10",
+]
+
+[tool.maturin]
+features = ["python", "pyo3/extension-module"]
+module-name = "xarray_cog._native"
+python-source = "python"
+
+[tool.mypy]
+files = ["python/xarray_cog"]
+python_version = "3.10"
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.cibuildwheel]
+build = "cp310-* cp311-* cp312-* cp313-* cp314-*"
+skip = "*-musllinux_*"
+# Maturin's PEP 517 backend builds optimized wheels; keep Cargo dependencies locked.
+config-settings = { build-args = "--locked" }
+# Check the base installation before adding the installed wheel's test extra.
+test-command = [
+    "python {project}/scripts/smoke-installed.py",
+    "python -m pip install 'xarray-cog[test]'",
+    "python -m pytest {project}/python/tests -q",
+]
+
+[tool.cibuildwheel.linux]
+archs = ["native"]
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
+before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.91.0"
+environment = { PATH = "$HOME/.cargo/bin:$PATH", RUSTUP_TOOLCHAIN = "1.91.0" }
+
+[tool.cibuildwheel.macos]
+archs = ["arm64", "x86_64"]
+before-all = [
+    "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.91.0",
+    "$HOME/.cargo/bin/rustup target add --toolchain 1.91.0 aarch64-apple-darwin x86_64-apple-darwin",
+]
+environment = { PATH = "$HOME/.cargo/bin:$PATH", RUSTUP_TOOLCHAIN = "1.91.0", MACOSX_DEPLOYMENT_TARGET = "13.0" }

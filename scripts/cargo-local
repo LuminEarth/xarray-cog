@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")/.."
+export CARGO_HOME="$PWD/.tools/cargo" RUSTUP_HOME="$PWD/.tools/rustup"
+export PATH="$CARGO_HOME/bin:$PATH" CARGO_BUILD_JOBS=1
+if [ "$(uname -s)" = "Darwin" ]; then
+    SDK_PATH="$(xcrun --show-sdk-path 2>/dev/null || true)"
+    if [ -n "$SDK_PATH" ] && [ -d "$SDK_PATH/usr/include/c++/v1" ]; then
+        export CXXFLAGS="${CXXFLAGS:-} -isysroot $SDK_PATH -I$SDK_PATH/usr/include/c++/v1"
+    fi
+fi
+exec cargo "$@"
