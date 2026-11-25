@@ -26,14 +26,15 @@ options, methodology, and recorded results.
 ## Packaging and release verification
 
 - [`smoke-installed.py`](smoke-installed.py) — Post-install smoke test run by
-  GitHub Actions, `cibuildwheel`, and CircleCI in a clean base-only
+  GitHub Actions and `cibuildwheel` in a clean base-only
   environment. Verifies `xarray_cog` imports from `site-packages`, optional
   backends (`zarr`, `dask`, `rasterio`, `osgeo`) are absent, and both
   `xarray_cog.write_cog` and `.cog.to_cog` write valid BigTIFF files.
 - [`check_distributions.py`](check_distributions.py) — Release artifact validator
-  used in CircleCI to verify a release directory contains the expected 20 wheels
-  and 1 source archive matching the package version and optional git tag, with
-  no unexpected files.
+  used in [`.github/workflows/publish.yml`](../.github/workflows/publish.yml) to
+  verify a release directory contains the expected 20 wheels and 1 source
+  archive matching the package version and optional git tag, with no unexpected
+  files.
 
 ## Script tests
 
