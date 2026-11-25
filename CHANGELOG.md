@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0 (2026-11-25)
+
+
+### Features
+
+* initial release of xarray-cog ([07e38c3](https://github.com/LuminEarth/xarray-cog/commit/07e38c377206914370352f4b745a2118ca790ffc))
+
+## Changelog
+
 ## Unreleased
 
 - Export regular xarray DataArray and Dataset rasters through a Rust COG writer.
